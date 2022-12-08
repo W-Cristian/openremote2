@@ -63,7 +63,7 @@ export const FetchData = (token) => {
           var resposeObj = JSON.parse(req.responseText);
           resolve(resposeObj);
           
-          alert("Set asset Success");
+          alert(`Set asset ${JSONobj.name} of type ${JSONobj.type} in realm ${JSONobj.realm} Success`);
         } else if (req.status === 403) {
           reject(alert("Set asset Forbidden"));
         }

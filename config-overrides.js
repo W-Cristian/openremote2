@@ -40,9 +40,11 @@ module.exports = {
       //   ca: fs.readFileSync(process.env.REACT_HTTPS_CA, "utf8"),
       //   passphrase: process.env.REACT_HTTPS_PASS,
       // };
-      config.headers  = {
-        "frame-src": "http://localhost/",
-      };
+      config.https= true;
+      // config.headers  = {
+      //   "frame-src": "https://localhost/",
+      //   "frame-ancestors": "https://localhost:3000",
+      // };
 
       // Return your customised Webpack Development Server config.
       return config;

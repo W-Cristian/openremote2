@@ -19,11 +19,11 @@ const uiSlice = createSlice({
   },
 });
 
-export const GetCredentials = () => {
+export const GetCredentials = (url) => {
   return async (dispatch) => {
     const keycloak = new Keycloak({
       realm: "master",
-      url: "https://localhost/auth/",
+      url: url,
       "ssl-required": "none",
       resource: "react",
       clientId: "react",
@@ -32,11 +32,13 @@ export const GetCredentials = () => {
     });
 
     const authenticated = await keycloak.init({
-      onLoad: "login-required",
+      onLoad: "login-required",        
+      // onLoad: "check-sso",
       checkLoginIframe: false,
     });
 
     if (authenticated) {
+    localStorage.removeItem("authURL");
       keycloak.loadUserInfo().then((userInfo) =>{
         dispatch(
           uiSlice.actions.updateAuth({

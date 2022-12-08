@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 const AssetInfo = (props) => {
   const date = new Date(props.item.createdOn);

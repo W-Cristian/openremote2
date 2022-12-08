@@ -18,7 +18,6 @@ const asset = useSelector((state) => state.asset.assets);
           </ul>
         </div>
         <div className="p-6 w-full">
-          <h1 className="text-4xl font-bold mb-10">Formular</h1>
           <div>{props.children}</div>
         </div>
       </div>
