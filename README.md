@@ -1,19 +1,20 @@
-# Getting Started with Create React App
+# General Explanation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project consists of creating a tool that allows a user to enter data in a more friendly way to the [Openremote](https://github.com/openremote/Documentation/wiki) application and specifically aims at the data entry of the [Netatmo](https://dev.netatmo.com/apidocumentation/weather) and [Gardena](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API) APIs.
 
-## Available Scripts
+## how to run?
 
-In the project directory, you can run:
+In the project directory(**node.js needed**), you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs the app in the development mode.This is configurate to run with **secure** protocol.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+you have to manually enter  [https://localhost:3000](https://localhost:3000) to view the app in your browser.
 
-# Build docker image and run it
+## Build docker image and run it
+
+Having docker installed on the system you can run the application easily by running the following commands in the root folder of the project (where the **Dockerfil** is)
+
 ### `docker build . -t openremote2`
 ### `docker run --publish 3000:3000 openremote2`

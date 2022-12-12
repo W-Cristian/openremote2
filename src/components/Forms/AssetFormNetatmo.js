@@ -69,8 +69,8 @@ const AssetFormNetatmo = () => {
   const [client_secret, Setclient_secret] = useState("YGVCWbrPNTwDHDoXTGBJXljzkGaxuUOkqigmKtNvM3ffx");
   const [scope, Setscope] = useState("read_station");
   const [grant_type, Setgrant_type] = useState("password");
-  const [username, Setusername] = useState("markus_fl@web.de");
-  const [password, Setpassword] = useState("sXLmt6B.zRSvwU-");
+  const [username, Setusername] = useState("user");
+  const [password, Setpassword] = useState("password");
   const [device_id, Setdevice_id] = useState("70:ee:50:65:31:28");
   const [module_id, Setmodule_id] = useState("");
   const [date_begin, Setdate_begin] = useState("");
