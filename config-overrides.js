@@ -40,7 +40,11 @@ module.exports = {
       //   ca: fs.readFileSync(process.env.REACT_HTTPS_CA, "utf8"),
       //   passphrase: process.env.REACT_HTTPS_PASS,
       // };
-      config.https= true;
+      // config.https = true;
+      // config.open= {
+      //   target: ['https://localhost:3000']
+      // }
+
       // config.headers  = {
       //   "frame-src": "https://localhost/",
       //   "frame-ancestors": "https://localhost:3000",

@@ -4,9 +4,15 @@ This project consists of creating a tool that allows a user to enter data in a m
 
 ## how to run?
 
-In the project directory(**node.js needed**), you can run:
+In the project directory(**node.js needed**), you must run the following command in this order
 
-### `npm start`
+>to install dependencies:
+
+>### `npm install`
+
+>to run de App:
+
+>### `npm start`
 
 Runs the app in the development mode.This is configurate to run with **secure** protocol.
 
