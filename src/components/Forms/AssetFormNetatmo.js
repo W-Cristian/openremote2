@@ -58,6 +58,9 @@ const AssetFormNetatmo = () => {
 
   // Timeframe between two measurements
   //{30min, 1hour, 3hours, 1day, 1week, 1month}
+  const GRAND_TYPE= "password";
+  const SCOPE = "read_station";
+
   const typeOfScale = ["30min", "1hour", "3hours", "1day", "1week", "1month"];
   const [scale, SetScale] = useState(typeOfScale[0]);
 
@@ -67,21 +70,18 @@ const AssetFormNetatmo = () => {
 
   const [client_id, Setclient_id] = useState("638894f1bcb7b68a9d05843c");
   const [client_secret, Setclient_secret] = useState("YGVCWbrPNTwDHDoXTGBJXljzkGaxuUOkqigmKtNvM3ffx");
-  const [scope, Setscope] = useState("read_station");
-  const [grant_type, Setgrant_type] = useState("password");
-  const [username, Setusername] = useState("user");
-  const [password, Setpassword] = useState("password");
+  const [username, Setusername] = useState("markus_fl@web.de");
+  const [password, Setpassword] = useState("sXLmt6B.zRSvwU-");
   const [device_id, Setdevice_id] = useState("70:ee:50:65:31:28");
-  const [module_id, Setmodule_id] = useState("");
   const [date_begin, Setdate_begin] = useState("");
   const [date_end, Setdate_end] = useState("");
   const [limit, Setlimit] = useState("10");
   
 
-  const FillJson = function(device_id,module_id,scale,typeOfMeasure,date_begin,date_end,limit) {
+  const FillJson = function(device_id,scale,typeOfMeasure,date_begin,date_end,limit) {
     var requestQueryParameters={};
+
     if (device_id.trim() !== ""){requestQueryParameters.device_id=[device_id];}
-    if (module_id.trim() !== ""){requestQueryParameters.module_id=[module_id];}
     if (scale.trim() !== ""){requestQueryParameters.scale=[scale];}
     if (typeOfMeasure.trim() !== ""){requestQueryParameters.type=[typeOfMeasure];}
     if (date_begin.trim() !== ""){requestQueryParameters.date_begin=[date_begin];}
@@ -93,19 +93,20 @@ const AssetFormNetatmo = () => {
 
   const setHandler = (event) => {
     event.preventDefault();
+    var returnObj = null;
     user
       .updateToken(30)
       .then(async function () {
-          var returnObj = null;
+          
 
-          //parameter works only for    grant_type:"password"  seee documentation openremote
+          //parameter works only for    GRAND_TYPE:"password"  seee documentation openremote
           var oAuthGrant_password ={
-            grant_type:grant_type ,
+            grant_type:GRAND_TYPE ,
             password:password ,
             username:username ,
             client_secret:client_secret ,
             client_id:client_id ,
-            scope:scope ,
+            scope:SCOPE ,
             tokenEndpointUri:"https://api.netatmo.com/oauth2/token",
           };
 
@@ -177,85 +178,69 @@ const AssetFormNetatmo = () => {
           // console.log("httpagent",HTTPagent );
 
           if (returnObj) {
-            var queryParameters= FillJson(device_id,module_id,scale,typeOfMeasure,date_begin,date_end,limit);
+            var queryParameters= FillJson(device_id,scale,typeOfMeasure,date_begin,date_end,limit);
             const WeatherAsset = {
-            name: "humidity",
-            type: "WeatherAsset",
-            realm: realm,
-            parentId: returnObj.id,
-            attributes: 
-            {
-              sunIrradiance: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "sunIrradiance",
-                  meta: {
+              name: typeOfMeasure,
+              type: "WeatherAsset",
+              realm: realm,
+              parentId: returnObj.id,
+              attributes: 
+              {
+                sunIrradiance: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "sunIrradiance",
+                    meta: {
+                        readOnly: true
+                    },
+                },
+                rainfall: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "rainfall",
+                    meta: {
+                        readOnly: true
+                    },
+                },
+                notes: {
+                    type: "text",
+                    value: null,
+                    name: "notes",
+                },
+                uVIndex: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "uVIndex",
+                    meta: {
+                        readOnly: true,
+                        label: "UV index"
+                    },
+                },
+                sunAzimuth: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "sunAzimuth",
+                    meta: {
+                        readOnly: true
+                    },
+                },
+                temperature: {
+                    type: "number",
+                    value: null,
+                    name: "temperature",
+                    meta: {
+                        readOnly: true
+                    },
+                },
+                humidity: {
+                    type: "positiveInteger",
+                    value: null,
+                    name: "humidity",
+                    meta: {
                       readOnly: true
                   },
-              },
-              rainfall: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "rainfall",
-                  meta: {
-                      readOnly: true
-                  },
-              },
-              notes: {
-                  type: "text",
-                  value: null,
-                  name: "notes",
-              },
-              uVIndex: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "uVIndex",
-                  meta: {
-                      readOnly: true,
-                      label: "UV index"
-                  },
-              },
-              sunAzimuth: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "sunAzimuth",
-                  meta: {
-                      readOnly: true
-                  },
-              },
-              temperature: {
-                  type: "number",
-                  value: null,
-                  name: "temperature",
-                  meta: {
-                      readOnly: true
-                  },
-              },
-              humidity: {
-                  type: "positiveInteger",
-                  value: null,
-                  name: "humidity",
-                  meta: {
-                      agentLink: {
-                          id: returnObj.id,
-                          valueFilters: [
-                              {
-                                  type: "jsonPath",
-                                  path: "$.body.[0].value.[8]",
-                                  returnFirst: true,
-                                  returnLast: false
-                              }
-                          ],
-                          queryParameters: queryParameters,
-                          pollingMillis: 10000,
-                          messageConvertBinary: false,
-                          messageConvertHex: false,
-                          type: "HTTPAgentLink"
-                      },
-                      readOnly: true
-                  },
-              },
-              location: {
+                },
+                location: {
                   type: "GEO_JSONPoint",
                   value: {
                       coordinates: [
@@ -266,55 +251,80 @@ const AssetFormNetatmo = () => {
                   },
                   name: "location",
               },
-              windDirection: {
-                  type: "direction",
+                windDirection: {
+                    type: "direction",
+                    value: null,
+                    name: "windDirection",
+                    meta: {
+                        "readOnly": true
+                    },
+                },
+                windSpeed: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "windSpeed",
+                    meta: {
+                        readOnly: true
+                    },
+                },
+                sunAltitude: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "sunAltitude",
+                    meta: {
+                        "readOnly": true
+                    },
+                },
+                sunZenith: {
+                    type: "positiveNumber",
+                    value: null,
+                    name: "sunZenith",
+                    meta: {
+                        "readOnly": true
+                    },
+                },
+                netatmo: {
+                  type: "positiveInteger",
                   value: null,
-                  name: "windDirection",
+                  name: "netatmo",
                   meta: {
-                      "readOnly": true
-                  },
-              },
-              windSpeed: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "windSpeed",
-                  meta: {
-                      readOnly: true
-                  },
-              },
-              sunAltitude: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "sunAltitude",
-                  meta: {
-                      "readOnly": true
-                  },
-              },
-              sunZenith: {
-                  type: "positiveNumber",
-                  value: null,
-                  name: "sunZenith",
-                  meta: {
-                      "readOnly": true
-                  },
+                    agentLink: {
+                        id: returnObj.id,
+                        valueFilters: [
+                            {
+                                type: "jsonPath",
+                                path: "$.body.[0].value.[8]",
+                                returnFirst: true,
+                                returnLast: false
+                            }
+                        ],
+                        queryParameters: queryParameters,
+                        pollingMillis: 10000,
+                        messageConvertBinary: false,
+                        messageConvertHex: false,
+                        type: "HTTPAgentLink"
+                    },
+                  readOnly: true
+                  }
+                }
               }
-          }
             };
             returnObj = SendAsset(user.token,WeatherAsset);
             // console.log("WeatherAsset",WeatherAsset );
-          }
+          };
       })
-      .catch(function () {
-        alert("Failed to refresh token");
+      .catch(function (e) {
+        console.error(`ERROR: ${e}`);
+        alert(`ERROR: ${e}`);
       });
   };
 
   const HandleTypeOfMeasure = (e) => {
-    SetTypeOfMeasure({ selectedValue: e.target.value });
+    SetTypeOfMeasure( e.target.value );
   };
 
   const HandleTypeOfScale = (e) => {
-    SetScale({ selectedValue: e.target.value });
+    SetScale(e.target.value);
   };
 
   return (
@@ -330,8 +340,6 @@ const AssetFormNetatmo = () => {
           <TextInput label="api - URL" setFunction={SetapiURL} value={apiURL} />
           <TextInput label="client_id" setFunction={Setclient_id} value={client_id} />
           <TextInput label="client_secret" setFunction={Setclient_secret} value={client_secret} noRequired={true} />
-          <TextInput label="scope" setFunction={Setscope} value={scope} noRequired={true} />
-          <TextInput label="grant_type" setFunction={Setgrant_type} value={grant_type} />
           <TextInput label="username" setFunction={Setusername} value={username}  placeholder="e.g. peter@zoller.com"/>
           <TextInput label="password" setFunction={Setpassword} value={password}  />
         </div>
@@ -339,7 +347,6 @@ const AssetFormNetatmo = () => {
         <div>
         <p className="font-bold sm my-5">Http Netatmo Api Parameters</p>
           <TextInput label="device_id" setFunction={Setdevice_id} value={device_id} placeholder="e.g 70:ee:50:65:xx:xx" />
-          <TextInput label="module_id" setFunction={Setmodule_id} value={module_id} placeholder="e.g 70:ee:50:65:xx:xx" noRequired={true} />
           <SelectorInput label="Type Of Measure" options={typeOfMeasures} handle={HandleTypeOfMeasure}/>
           <SelectorInput label="Scale" options={typeOfScale} handle={HandleTypeOfScale}/>
           <TextInput label="date_begin" setFunction={Setdate_begin} value={date_begin} noRequired={true} placeholder="e.g. 1459265427"/>

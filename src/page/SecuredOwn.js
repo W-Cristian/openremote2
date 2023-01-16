@@ -84,10 +84,7 @@ const SecuredOwn = () => {
           </Fragment>
         );
       }
-
-
   }
-
 };
 
 export default SecuredOwn;
