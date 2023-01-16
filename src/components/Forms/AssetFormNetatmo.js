@@ -70,8 +70,8 @@ const AssetFormNetatmo = () => {
 
   const [client_id, Setclient_id] = useState("638894f1bcb7b68a9d05843c");
   const [client_secret, Setclient_secret] = useState("YGVCWbrPNTwDHDoXTGBJXljzkGaxuUOkqigmKtNvM3ffx");
-  const [username, Setusername] = useState("markus_fl@web.de");
-  const [password, Setpassword] = useState("sXLmt6B.zRSvwU-");
+  const [username, Setusername] = useState("");
+  const [password, Setpassword] = useState("");
   const [device_id, Setdevice_id] = useState("70:ee:50:65:31:28");
   const [date_begin, Setdate_begin] = useState("");
   const [date_end, Setdate_end] = useState("");
@@ -341,7 +341,7 @@ const AssetFormNetatmo = () => {
           <TextInput label="client_id" setFunction={Setclient_id} value={client_id} />
           <TextInput label="client_secret" setFunction={Setclient_secret} value={client_secret} noRequired={true} />
           <TextInput label="username" setFunction={Setusername} value={username}  placeholder="e.g. peter@zoller.com"/>
-          <TextInput label="password" setFunction={Setpassword} value={password}  />
+          <TextInput label="password" setFunction={Setpassword} value={password}  placeholder="e.g. secret"/>
         </div>
 
         <div>
